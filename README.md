@@ -4,15 +4,15 @@
 # Customer Churn Prediction
 
 ## Business Objective
-Customer churn — when a customer stops using a company's product or service — directly impacts revenue and growth. The goal of this project is to build and compare multiple machine learning classification models that predict whether a customer is likely to churn, enabling the business to proactively identify at-risk customers and design targeted retention strategies.
+Customer churn - when a customer stops using a company's product or service, directly impacts revenue and growth. The goal of this project is to build and compare multiple machine learning classification models that predict whether a customer is likely to churn, enabling the business to proactively identify at-risk customers and design targeted retention strategies.
 
 ## Dataset Overview
 The dataset is the **Customer Churn Dataset**, provided as two pre-split files:
 
-- `customer_churn_dataset-training-master.csv` — 440,833 rows, 12 columns
-- `customer_churn_dataset-testing-master.csv` — 64,374 rows, 12 columns
+- `customer_churn_dataset-training-master.csv` - 440,833 rows, 12 columns
+- `customer_churn_dataset-testing-master.csv` - 64,374 rows, 12 columns
 
-Since the dataset was already split into training and testing files, no additional train/test split was performed — the provided training file was used to fit the models, and the testing file was used purely for evaluation.
+Since the dataset was already split into training and testing files, no additional train/test split was performed, the provided training file was used to fit the models and the testing file was used purely for evaluation.
 
 ## Features & Target Variable
 **Features used:**
@@ -34,7 +34,7 @@ Since the dataset was already split into training and testing files, no addition
 ## Preprocessing Pipeline
 1. **Missing values:** One row containing nulls across all columns was found in both the training and testing sets and removed via `dropna()`.
 2. **Dropped irrelevant column:** `CustomerID` removed from both datasets.
-3. **Categorical encoding:** `Gender`, `Subscription Type`, and `Contract Length` were label-encoded using `LabelEncoder`, fit on the training set and applied to the test set.
+3. **Categorical encoding:** `Gender`, `Subscription Type` and `Contract Length` were label-encoded using `LabelEncoder`, fit on the training set and applied to the test set.
 4. **Feature scaling:** `StandardScaler` was applied to the feature set (fit on training data, applied to both) for Logistic Regression, which is distance/gradient-sensitive. Tree-based models (Decision Tree, Random Forest) were trained on the unscaled data since they are not sensitive to feature scale.
 5. **Feature/target split:** `X_train`, `y_train`, `X_test`, `y_test` were separated using `Churn` as the target.
 
@@ -69,16 +69,16 @@ Random Forest:
 ## Best Model with Justification
 **Logistic Regression** was selected as the best-performing model, based on its highest F1-Score (0.6925) among the three.
 
-While all three models achieve very high recall (~98–99%), meaning they rarely miss an actual churner, Logistic Regression achieves a meaningfully higher precision (0.53 vs. 0.49) than the tree-based models. This means Logistic Regression produces fewer false positives — fewer customers wrongly flagged as likely to churn — making it the most balanced choice between catching real churners and avoiding wasted retention effort on customers who wouldn't have churned anyway.
+While all three models achieve very high recall (~98–99%), meaning they rarely miss an actual churner, Logistic Regression achieves a meaningfully higher precision (0.53 vs. 0.49) than the tree-based models. This means Logistic Regression produces fewer false positives, fewer customers wrongly flagged as likely to churn, making it the most balanced choice between catching real churners and avoiding wasted retention effort on customers who wouldn't have churned anyway.
 
 ## Key Observations
-- All three models show a strong bias toward predicting the positive (churn) class, reflected in the very high recall but modest precision and accuracy — this pattern often shows up when the churn class is a large share of the dataset.
+- All three models show a strong bias toward predicting the positive (churn) class, reflected in the very high recall but modest precision and accuracy, this pattern often shows up when the churn class is a large share of the dataset.
 - Decision Tree and Random Forest produced nearly identical metrics, suggesting the Random Forest's ensembling added little value here, likely because both were trained with default (unconstrained) tree depth, leading to similar overfitting behavior.
 - Overall accuracy (~50-59%) across all models indicates there is meaningful room for improvement.
 
 ## Business Recommendations
 - Deploy Logistic Regression as the primary churn-prediction model given its best precision/recall balance.
-- Since recall is very high across all models, the business can be confident that at-risk customers are largely being identified — the main opportunity for improvement is reducing false positives, which will make retention campaigns more targeted and cost-effective.
+- Since recall is very high across all models, the business can be confident that at-risk customers are largely being identified, the main opportunity for improvement is reducing false positives, which will make retention campaigns more targeted and cost-effective.
 - Use model outputs to prioritize outreach (offers, support calls, loyalty incentives) toward customers flagged as high-risk.
 
 ## Future Improvements
